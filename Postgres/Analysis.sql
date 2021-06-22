@@ -74,3 +74,66 @@ select first_name, last_name, school from teachers order by school asc, last_nam
 select first_name, last_name, salary from teachers where first_name like '%S%' and salary > 40000;
 
 select first_name, last_name, salary, hire_date from teachers where hire_date > '2010-01-01' order by salary desc;
+
+---listing 3-1:
+create table char_data_types (
+    varchar_column varchar(10),
+    char_column char(10),
+    text_column text
+);
+
+insert into char_data_types
+values ('abc', 'abc', 'abc'),
+       ('defghi', 'defghi', 'defghi');
+
+copy char_data_types to '/home/pi/typetest.txt'
+with (format csv, header, delimiter '|');
+
+select * from char_data_types;
+
+---listing 3-2:
+create table number_data_types (
+    numeric_column numeric(20,5),
+    real_column real,
+    double_column double precision
+);
+
+insert into number_data_types
+values (.7, .7, .7),
+       (2.13579, 2.13579, 2.13579),
+       (2.1357987654, 2.1357987654, 2.1357987654);
+
+select * from number_data_types;
+
+---listing 3-3:
+select numeric_column * 10000000 as "Fixed",
+       real_column * 10000000 as "Float" from number_data_types where numeric_column = .7;
+
+---listing 3-4:
+create table date_time_types (
+    timestamp_column timestamp with time zone,
+    interval_column interval
+);
+
+insert into date_time_types
+values ('2018-12-31  01:00 EST', '2 days'),
+       ('2018-12-31  01:00 -8', '1 month'),
+       ('2018-12-31  01:00 Australia/Melbourne', '1 century'),
+       (now(), '1 week');
+
+select * from date_time_types;
+
+---listing 3-5:
+select timestamp_column, interval_column,
+       timestamp_column - date_time_types.interval_column as new_date from date_time_types;
+
+---listing 3-6:
+select timestamp_column, cast(timestamp_column as varchar(10))
+from  date_time_types;
+
+select numeric_column,
+       cast(numeric_column as integer),
+       cast(numeric_column as varchar(6))
+from number_data_types;
+
+select cast(char_column as integer) from char_data_types;
