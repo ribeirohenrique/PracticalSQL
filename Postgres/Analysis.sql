@@ -200,3 +200,19 @@ drop table supervisor_salaries_temp;
 COPY us_counties_2010
 TO 'D:\Desenvolvimento\supervisor_salaries.csv'
 WITH (FORMAT CSV, HEADER, DELIMITER '|');
+
+---listing 4-8:
+---Esse comando copy não funciona se for de uma máquina diferente do host, usei a importação através do Datagrip mesmo
+COPY us_counties_2010 (geo_name, internal_point_lat, internal_point_lon)
+TO 'D:\Desenvolvimento\supervisor_salaries.csv'
+WITH (FORMAT CSV, HEADER, DELIMITER '|');
+
+---listing 4-9:
+---Esse comando copy não funciona se for de uma máquina diferente do host, usei a importação através do Datagrip mesmo
+COPY (
+    SELECT geo_name, state_us_abbreviation
+    FROM us_counties_2010
+    WHERE geo_name ILIKE '%mill%'
+    )
+TO 'C:\YourDirectory\us_counties_mill_export.txt'
+WITH (FORMAT CSV, HEADER, DELIMITER '|');
